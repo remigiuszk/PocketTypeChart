@@ -1,4 +1,4 @@
-using Application.Abstractions;
+using Application.Abstractions.Repositories;
 using DataAccess;
 using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;

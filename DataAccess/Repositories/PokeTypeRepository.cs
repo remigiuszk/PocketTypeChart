@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Abstractions.Repositories;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,11 +6,17 @@ namespace DataAccess.Repositories
 {
     public class PokeTypeRepository(PokeDbContext pokeDbContext) : IPokeTypeRepository
     {
-        private readonly PokeDbContext _pokeDbContext = pokeDbContext;
+        private readonly PokeDbContext _dbContext = pokeDbContext;
 
-        public async Task<ICollection<PokeType>> GetPokeTypes()
+        public async Task<ICollection<PokeType>> GetPokeTypes(CancellationToken cancellationToken)
         {
-            return await _pokeDbContext.PokeTypes.ToListAsync();
+            return await _dbContext.PokeTypes.ToListAsync(cancellationToken);
+        }
+
+        public async Task AddPokeType(PokeType pokeType, CancellationToken cancellationToken)
+        {
+            _dbContext.PokeTypes.Add(pokeType);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
