@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.PokeTypes;
 
 namespace Application.Abstractions.Repositories
 {
@@ -6,5 +6,6 @@ namespace Application.Abstractions.Repositories
     {
         Task<ICollection<PokeType>> GetPokeTypes(CancellationToken cancellationToken);
         Task AddPokeType(PokeType pokeType, CancellationToken cancellationToken);
+        Task<PokeType?> GetPokeTypeById(int id, CancellationToken cancellationToken);
     }
 }

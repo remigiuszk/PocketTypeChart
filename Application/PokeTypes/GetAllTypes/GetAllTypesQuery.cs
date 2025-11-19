@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Messaging;
 using Application.Abstractions.Repositories;
-using Domain.Models;
+using Application.Shared;
+using Domain.PokeTypes;
 
 namespace Application.PokeTypes.GetAllTypes
 {
@@ -10,9 +11,10 @@ namespace Application.PokeTypes.GetAllTypes
     {
         private readonly IPokeTypeRepository _repository = repository;
 
-        public async Task<ICollection<PokeType>> Handle(GetAllTypesQuery query, CancellationToken cancellationToken)
+        public async Task<Result<ICollection<PokeType>>> Handle(GetAllTypesQuery query, CancellationToken cancellationToken)
         {
-            return await _repository.GetPokeTypes(cancellationToken);
+            var pokeTypes = await _repository.GetPokeTypes(cancellationToken);
+            return Result.Success(pokeTypes);
         }
     }
 }

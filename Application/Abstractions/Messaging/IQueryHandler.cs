@@ -1,7 +1,9 @@
-﻿namespace Application.Abstractions.Messaging;
+﻿using Application.Shared;
+
+namespace Application.Abstractions.Messaging;
 
 public interface IQueryHandler<in TQuery, TResponse>
     where TQuery : IQuery<TResponse>
 {
-    Task<TResponse> Handle(TQuery query, CancellationToken cancellationToken);
+    Task<Result<TResponse>> Handle(TQuery query, CancellationToken cancellationToken);
 }

@@ -1,5 +1,5 @@
 ﻿using Application.Abstractions.Repositories;
-using Domain.Models;
+using Domain.PokeTypeRelations;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories

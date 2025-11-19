@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.PokeTypeRelations;
+using Domain.PokeTypes;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess

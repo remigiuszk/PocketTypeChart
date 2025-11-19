@@ -1,5 +1,5 @@
 ﻿using Application.Abstractions.Repositories;
-using Domain.Models;
+using Domain.PokeTypes;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
@@ -17,6 +17,11 @@ namespace DataAccess.Repositories
         {
             _dbContext.PokeTypes.Add(pokeType);
             await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<PokeType?> GetPokeTypeById(int id, CancellationToken cancellationToken)
+        {
+            return await _dbContext.PokeTypes.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
     }
 }

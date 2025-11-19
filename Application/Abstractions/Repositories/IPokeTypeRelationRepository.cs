@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.PokeTypeRelations;
 
 namespace Application.Abstractions.Repositories
 {
