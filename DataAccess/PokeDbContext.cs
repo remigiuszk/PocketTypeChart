@@ -4,9 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
-    public class PokeDbContext(DbContextOptions opt) : DbContext(opt)
+    public class PokeDbContext : DbContext
     {
-        public DbSet<PokeType> PokeTypes { get; set; }
-        public DbSet<PokeTypeRelation> PokeTypeRelations { get; set; }
+        public PokeDbContext(DbContextOptions<PokeDbContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<PokeType> PokeTypes { get; set; } = null!;
+        public DbSet<PokeTypeRelation> PokeTypeRelations { get; set; } = null!;
     }
 }

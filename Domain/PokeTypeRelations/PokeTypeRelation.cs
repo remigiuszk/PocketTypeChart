@@ -10,6 +10,10 @@
             Multiplier = multiplier;
         }
 
+        protected PokeTypeRelation()
+        {
+        }
+
         public Guid Id { get; set; }
         public int AttackingTypeId { get; set; }
         public int DefendingTypeId { get; set; }
