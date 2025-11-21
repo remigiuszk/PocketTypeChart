@@ -5,6 +5,7 @@ using DataAccess;
 using DataAccess.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using PocketTypeChart.Extensions.Application;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,18 +48,17 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/api/poketypes", async (IMediator mediator) =>
 {
-    try
-    {
-        var getAllTypes = new GetAllTypesQuery();
-        var pokeTypes = await mediator.Send(getAllTypes);
-        return Results.Ok(pokeTypes);
-    }
-    catch (Exception ex)
-    {
-
-        throw ex;
-    }
+    var getAllTypes = new GetAllTypesQuery();
+    var result = await mediator.Send(getAllTypes);
+    return result.ToHttpResult();
 }).WithName("GetAllPokeTypes");
+
+app.MapPost("/api/poketypes/preloadTypes", async (IMediator mediator) =>
+{
+    var preloadTypes = new PreloadTypesCommand();
+    var result = await mediator.Send(preloadTypes);
+    return result.ToHttpResult();
+}).WithName("PreloadTypes");
 
 app.UseHttpsRedirection();
 
