@@ -15,8 +15,6 @@ namespace Application.PokeTypes.PreloadTypes
 
         public async Task<Result> Handle(PreloadTypesCommand command, CancellationToken cancellationToken)
         {
-            await _pokeTypeRepository.AddPokeType(PokeType.Create(1, "fire", "test"), cancellationToken);
-
             var existingType = await _pokeTypeRepository.GetPokeTypeById(1, cancellationToken);
 
             if (existingType != null)

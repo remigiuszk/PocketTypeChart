@@ -45,10 +45,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.PokeTypes.PokeType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");

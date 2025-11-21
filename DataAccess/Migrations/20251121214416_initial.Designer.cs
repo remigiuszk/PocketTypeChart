@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(PokeDbContext))]
-    [Migration("20251120230112_typesAndRelations")]
-    partial class typesAndRelations
+    [Migration("20251121214416_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,10 +48,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.PokeTypes.PokeType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");

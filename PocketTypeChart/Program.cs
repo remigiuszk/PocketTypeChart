@@ -10,28 +10,6 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
-
-builder.Host.UseSerilog((context, services, configuration) =>
-{
-    configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .Enrich.FromLogContext();
-});
-
-var cs = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddDbContext<PokeDbContext>(opt => opt.UseSqlServer(cs));
-builder.Services.AddScoped<IPokeTypeRepository, PokeTypeRepository>();
-builder.Services.AddScoped<IPokeTypeRelationRepository, PokeTypeRelationRepository>();
-
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssemblyContaining<PreloadTypesCommand>());
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 // Add services to the container.
 
 var app = builder.Build();
