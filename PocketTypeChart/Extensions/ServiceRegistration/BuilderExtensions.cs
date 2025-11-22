@@ -4,6 +4,8 @@ using DataAccess.Repositories;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Application.Abstractions.Services;
+using Application.PokeTypes.PreloadTypes.Services;
 
 namespace PocketTypeChart.Extensions.ServiceRegistration
 {
@@ -14,6 +16,8 @@ namespace PocketTypeChart.Extensions.ServiceRegistration
             RegisterLogging(builder);
 
             RegisterDatabaseServices(builder);
+
+            RegisterApplicationServices(builder);
 
             builder.Services.AddMediatR(cfg =>
                 cfg.RegisterServicesFromAssemblyContaining<PreloadTypesCommand>());
@@ -48,6 +52,11 @@ namespace PocketTypeChart.Extensions.ServiceRegistration
         {
             builder.Services.AddScoped<IPokeTypeRepository, PokeTypeRepository>();
             builder.Services.AddScoped<IPokeTypeRelationRepository, PokeTypeRelationRepository>();
+        }
+
+        private static void RegisterApplicationServices(WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<IPokeApiHttpService, PokeApiHttpService>();
         }
     }
 }
