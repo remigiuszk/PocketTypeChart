@@ -1,4 +1,5 @@
 ﻿using Application.Shared;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PocketTypeChart.Extensions.Application
@@ -16,16 +17,16 @@ namespace PocketTypeChart.Extensions.Application
         public static IResult ToHttpResult<T>(this Result<T> result)
         {
             if (result.IsSuccess)
-                return Results.Ok(result.Value);
+                return TypedResults.Ok(result.Value);
 
             return HandleErrors(result.Error);
         }
 
-        private static IResult HandleErrors(Error error)
+        private static ProblemHttpResult HandleErrors(Error error)
         {
             var problemDetails = CreateProblemDetails(error);
 
-            return Results.Problem(problemDetails);
+            return TypedResults.Problem(problemDetails);
         }
 
         private static ProblemDetails CreateProblemDetails(Error error)
