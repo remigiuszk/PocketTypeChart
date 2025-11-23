@@ -1,9 +1,9 @@
 ﻿using Application.Abstractions.Services;
-using Application.PokeTypes.PreloadTypes.Services.Constants;
-using Application.PokeTypes.PreloadTypes.Services.Dto;
+using Application.External.Constants;
+using Application.External.Dto;
 using System.Net.Http.Json;
 
-namespace Application.PokeTypes.PreloadTypes.Services
+namespace Application.External.PokeApi
 {
     public class PokeApiHttpService : IPokeApiHttpService
     {
@@ -17,7 +17,7 @@ namespace Application.PokeTypes.PreloadTypes.Services
             };
         }
 
-        public async Task<PokeTypeDto> GetPokeType(int id)
+        public async Task<PokeTypeDto> GetPokeTypeAsync(int id)
         {
             var url = PokeApiConstants.TYPES_ENDPOINT + id.ToString();
 
@@ -25,7 +25,7 @@ namespace Application.PokeTypes.PreloadTypes.Services
 
             if (response.IsSuccessStatusCode)
             {
-                var t =  await response.Content.ReadFromJsonAsync<PokeTypeDto>();
+                var t = await response.Content.ReadFromJsonAsync<PokeTypeDto>();
                 return t;
             }
             else

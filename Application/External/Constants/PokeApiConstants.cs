@@ -1,6 +1,6 @@
 ﻿using static System.Net.WebRequestMethods;
 
-namespace Application.PokeTypes.PreloadTypes.Services.Constants
+namespace Application.External.Constants
 {
     public static class PokeApiConstants
     {

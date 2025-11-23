@@ -12,6 +12,6 @@ namespace DataAccess
         }
 
         public DbSet<PokeType> PokeTypes { get; set; } = null!;
-        public DbSet<PokeTypeRelation> PokeTypeRelations { get; set; } = null!;
+        public DbSet<DamageRelation> PokeTypeRelations { get; set; } = null!;
     }
 }

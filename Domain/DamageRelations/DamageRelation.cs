@@ -1,8 +1,8 @@
 ﻿namespace Domain.PokeTypeRelations
 {
-    public class PokeTypeRelation
+    public class DamageRelation
     {
-        private PokeTypeRelation(Guid id, int attackingTypeId, int defendingTypeId, double multiplier)
+        private DamageRelation(Guid id, int attackingTypeId, int defendingTypeId, double multiplier)
         {
             Id = id;
             AttackingTypeId = attackingTypeId;
@@ -10,7 +10,7 @@
             Multiplier = multiplier;
         }
 
-        protected PokeTypeRelation()
+        protected DamageRelation()
         {
         }
 
@@ -19,9 +19,9 @@
         public int DefendingTypeId { get; set; }
         public double Multiplier { get; set; }
 
-        public static PokeTypeRelation Create(Guid id, int attackingTypeId, int defendingTypeId, double multiplier)
+        public static DamageRelation Create(Guid id, int attackingTypeId, int defendingTypeId, double multiplier)
         {
-            return new PokeTypeRelation(id, attackingTypeId, defendingTypeId, multiplier);
+            return new DamageRelation(id, attackingTypeId, defendingTypeId, multiplier);
         }
 
     }

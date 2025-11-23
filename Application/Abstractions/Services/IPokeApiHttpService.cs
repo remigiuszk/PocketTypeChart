@@ -1,9 +1,9 @@
-﻿using Application.PokeTypes.PreloadTypes.Services.Dto;
+﻿using Application.External.Dto;
 
 namespace Application.Abstractions.Services
 {
     public interface IPokeApiHttpService
     {
-        Task<PokeTypeDto> GetPokeType(int id);
+        Task<PokeTypeDto> GetPokeTypeAsync(int id);
     }
 }

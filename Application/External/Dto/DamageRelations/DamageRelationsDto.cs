@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Application.PokeTypes.PreloadTypes.Services.Dto.DamageRelations
+namespace Application.External.Dto.DamageRelations
 {
     public class DamageRelationsDto
     {

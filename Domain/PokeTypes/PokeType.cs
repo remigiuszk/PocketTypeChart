@@ -4,11 +4,11 @@ namespace Domain.PokeTypes
 {
     public class PokeType
     {
-        private PokeType(int id, string? name, string? image)
+        private PokeType(int id, string? name, string? sprite)
         {
             Id = id;
             Name = name;
-            Image = image;
+            Sprite = sprite;
         }
 
         protected PokeType()
@@ -18,11 +18,11 @@ namespace Domain.PokeTypes
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public string? Name { get; set; }
-        public string? Image { get; set; }
+        public string? Sprite { get; set; }
 
-        public static PokeType Create(int id, string? name, string? image)
+        public static PokeType Create(int id, string? name, string? sprite)
         {
-            return new PokeType(id, name, image);
+            return new PokeType(id, name, sprite);
         }
     }
 }

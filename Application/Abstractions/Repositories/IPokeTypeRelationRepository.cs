@@ -4,8 +4,8 @@ namespace Application.Abstractions.Repositories
 {
     public interface IPokeTypeRelationRepository
     {
-        Task<ICollection<PokeTypeRelation>> GetOffensiveRelations(int pokeTypeId);
-        Task<ICollection<PokeTypeRelation>> GetDefensiveRelations(int pokeTypeId);
-        Task AddRelations(IEnumerable<PokeTypeRelation> relations);
+        Task<ICollection<DamageRelation>> GetOffensiveRelations(int pokeTypeId);
+        Task<ICollection<DamageRelation>> GetDefensiveRelations(int pokeTypeId);
+        Task AddRelations(IEnumerable<DamageRelation> relations);
     }
 }
