@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Application.External.Dto.DamageRelations
+namespace Application.External.PokeApi.Dto.DamageRelations
 {
     public class DamageRelationsDto
     {

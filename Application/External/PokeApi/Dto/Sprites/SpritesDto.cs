@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Application.External.Dto.Sprites
+namespace Application.External.PokeApi.Dto.Sprites
 {
     public class SpritesDto
     {

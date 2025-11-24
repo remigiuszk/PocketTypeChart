@@ -1,8 +1,9 @@
 ﻿using Application.Abstractions.Messaging;
 using Application.Abstractions.Repositories;
 using Application.Abstractions.Services;
-using Application.External.Dto;
 using Application.External.Mappers;
+using Application.External.PokeApi.Dto;
+using Application.External.PokeApi.Mappers;
 using Application.PokeTypes.PreloadTypes.Services.Dto;
 using Application.Shared;
 using Domain.PokeTypeRelations;
@@ -44,9 +45,8 @@ namespace Application.PokeTypes.PreloadTypes
         {
             for (var i = 1; i <= AMOUNT_OF_TYPES; i++)
             {
-                await GetPokeTypeFromPokeApiAsync(i);
-
-                _typesToSave.Add(pokeTypeDto.ToDomain());
+                var pokeTypeDto = await GetPokeTypeFromPokeApiAsync(i);
+                Add
             }
         }
 
@@ -54,7 +54,8 @@ namespace Application.PokeTypes.PreloadTypes
         {
             var externalDto = await _pokeApiHttpService.GetPokeTypeAsync(i);
 
-            var damageRelations = PrepareDamageRelations
+            _typesToSave.Add(externalDto.ToDomain());
         }
+       
     }
 }

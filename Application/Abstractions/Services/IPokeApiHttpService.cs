@@ -1,4 +1,4 @@
-﻿using Application.External.Dto;
+﻿using Application.External.PokeApi.Dto;
 
 namespace Application.Abstractions.Services
 {

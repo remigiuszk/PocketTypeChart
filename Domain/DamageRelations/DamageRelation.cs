@@ -2,9 +2,8 @@
 {
     public class DamageRelation
     {
-        private DamageRelation(Guid id, int attackingTypeId, int defendingTypeId, double multiplier)
+        private DamageRelation(int attackingTypeId, int defendingTypeId, double multiplier)
         {
-            Id = id;
             AttackingTypeId = attackingTypeId;
             DefendingTypeId = defendingTypeId;
             Multiplier = multiplier;
@@ -19,9 +18,9 @@
         public int DefendingTypeId { get; set; }
         public double Multiplier { get; set; }
 
-        public static DamageRelation Create(Guid id, int attackingTypeId, int defendingTypeId, double multiplier)
+        public static DamageRelation Create(int attackingTypeId, int defendingTypeId, double multiplier)
         {
-            return new DamageRelation(id, attackingTypeId, defendingTypeId, multiplier);
+            return new DamageRelation(attackingTypeId, defendingTypeId, multiplier);
         }
 
     }

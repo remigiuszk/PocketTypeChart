@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Services;
-using Application.External.Constants;
-using Application.External.Dto;
+using Application.External.PokeApi.Constants;
+using Application.External.PokeApi.Dto;
 using System.Net.Http.Json;
 
 namespace Application.External.PokeApi

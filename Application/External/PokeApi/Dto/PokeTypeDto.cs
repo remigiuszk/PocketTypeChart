@@ -1,9 +1,9 @@
-﻿using Application.External.Dto.DamageRelations;
-using Application.External.Dto.Sprites;
+﻿using Application.External.PokeApi.Dto.DamageRelations;
+using Application.External.PokeApi.Dto.Sprites;
 using Domain.PokeTypes;
 using System.Text.Json.Serialization;
 
-namespace Application.External.Dto
+namespace Application.External.PokeApi.Dto
 {
     public class PokeTypeDto
     {
