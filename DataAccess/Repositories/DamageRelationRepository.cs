@@ -4,23 +4,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class DamageRelationRepository(PokeDbContext dbContext) : IPokeTypeRelationRepository
+    public class DamageRelationRepository(PokeDbContext dbContext) : IDamageRelationRepository
     {
         private readonly PokeDbContext _dbContext = dbContext;
 
-        public async Task AddRelations(IEnumerable<DamageRelation> relations)
+        public async Task AddRelations(ICollection<DamageRelation> relations, CancellationToken cancellationToken)
         {
-            await _dbContext.PokeTypeRelations.AddRangeAsync(relations);
+            _dbContext.DamageRelations.AddRange(relations);
+            await  _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<ICollection<DamageRelation>> GetDefensiveRelations(int pokeTypeId)
+        public async Task<List<DamageRelation>> GetDefensiveRelations(int pokeTypeId)
         {
-            return await _dbContext.PokeTypeRelations.Where(relation => relation.DefendingTypeId == pokeTypeId).ToListAsync();
+            return await _dbContext.DamageRelations.Where(relation => relation.DefendingTypeId == pokeTypeId).ToListAsync();
         }
 
-        public async Task<ICollection<DamageRelation>> GetOffensiveRelations(int pokeTypeId)
+        public async Task<List<DamageRelation>> GetOffensiveRelations(int pokeTypeId)
         {
-            return await _dbContext.PokeTypeRelations.Where(relation => relation.AttackingTypeId == pokeTypeId).ToListAsync();
+            return await _dbContext.DamageRelations.Where(relation => relation.AttackingTypeId == pokeTypeId).ToListAsync();
+        }
+
+        public async Task<bool> HasAnyDamageRelationsAsync(CancellationToken cancellationToken)
+        {
+            return await _dbContext.DamageRelations.AnyAsync();
         }
     }
 }

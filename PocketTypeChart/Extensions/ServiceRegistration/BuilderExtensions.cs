@@ -51,7 +51,7 @@ namespace PocketTypeChart.Extensions.ServiceRegistration
         private static void RegisterRepositories(WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<IPokeTypeRepository, PokeTypeRepository>();
-            builder.Services.AddScoped<IPokeTypeRelationRepository, DamageRelationRepository>();
+            builder.Services.AddScoped<IDamageRelationRepository, DamageRelationRepository>();
         }
 
         private static void RegisterApplicationServices(WebApplicationBuilder builder)

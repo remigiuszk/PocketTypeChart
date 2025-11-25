@@ -8,20 +8,25 @@ namespace DataAccess.Repositories
     {
         private readonly PokeDbContext _dbContext = pokeDbContext;
 
-        public async Task<ICollection<PokeType>> GetPokeTypes(CancellationToken cancellationToken)
+        public async Task<List<PokeType>> GetPokeTypes(CancellationToken cancellationToken)
         {
             return await _dbContext.PokeTypes.ToListAsync(cancellationToken);
-        }
-
-        public async Task AddPokeType(PokeType pokeType, CancellationToken cancellationToken)
-        {
-            _dbContext.PokeTypes.Add(pokeType);
-            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<PokeType?> GetPokeTypeById(int id, CancellationToken cancellationToken)
         {
             return await _dbContext.PokeTypes.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public async Task AddPokeTypes(ICollection<PokeType> pokeTypes, CancellationToken cancellationToken)
+        {
+            _dbContext.PokeTypes.AddRange(pokeTypes);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<bool> HasAnyPokeTypesAsync(CancellationToken cancellationToken)
+        {
+            return await _dbContext.PokeTypes.AnyAsync(cancellationToken);
         }
     }
 }

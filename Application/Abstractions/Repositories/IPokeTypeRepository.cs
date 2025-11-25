@@ -4,8 +4,9 @@ namespace Application.Abstractions.Repositories
 {
     public interface IPokeTypeRepository
     {
-        Task<ICollection<PokeType>> GetPokeTypes(CancellationToken cancellationToken);
-        Task AddPokeType(PokeType pokeType, CancellationToken cancellationToken);
+        Task<List<PokeType>> GetPokeTypes(CancellationToken cancellationToken);
+        Task AddPokeTypes(ICollection<PokeType> pokeTypes, CancellationToken cancellationToken);
         Task<PokeType?> GetPokeTypeById(int id, CancellationToken cancellationToken);
+        Task<bool> HasAnyPokeTypesAsync(CancellationToken cancellationToken);
     }
 }
