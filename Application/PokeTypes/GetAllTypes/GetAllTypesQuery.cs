@@ -5,13 +5,13 @@ using Domain.PokeTypes;
 
 namespace Application.PokeTypes.GetAllTypes
 {
-    public sealed record GetAllTypesQuery : IQuery<ICollection<PokeType>>;
+    public sealed record GetAllTypesQuery : IQuery<List<PokeType>>;
 
-    internal sealed class GetAllTypesQueryHandler(IPokeTypeRepository repository) : IQueryHandler<GetAllTypesQuery, ICollection<PokeType>>
+    internal sealed class GetAllTypesQueryHandler(IPokeTypeRepository repository) : IQueryHandler<GetAllTypesQuery, List<PokeType>>
     {
         private readonly IPokeTypeRepository _repository = repository;
 
-        public async Task<Result<ICollection<PokeType>>> Handle(GetAllTypesQuery query, CancellationToken cancellationToken)
+        public async Task<Result<List<PokeType>>> Handle(GetAllTypesQuery query, CancellationToken cancellationToken)
         {
             var pokeTypes = await _repository.GetPokeTypes(cancellationToken);
             return Result.Success(pokeTypes);

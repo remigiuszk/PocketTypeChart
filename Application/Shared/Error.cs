@@ -9,5 +9,4 @@
 
         public Result ToResult() => Result.Failure(this);
     }
-
 }
