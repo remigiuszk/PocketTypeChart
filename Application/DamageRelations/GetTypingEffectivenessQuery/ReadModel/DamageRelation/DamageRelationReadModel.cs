@@ -1,6 +1,4 @@
-﻿using Application.DamageRelations.GetTypingEffectivenessQuery.ReadModel.DamageRelation.PokeType;
-
-namespace Application.DamageRelations.GetTypingEffectivenessQuery.ReadModel.NewFolder
+﻿namespace Application.DamageRelations.GetTypingEffectivenessQuery.ReadModel.NewFolder
 {
     public class DamageRelationReadModel
     {

@@ -2,12 +2,12 @@
 
 namespace Application.External.PokeApi.Dto.DamageRelations
 {
-    public class DamageRelationDto
+    public class ExternalDamageRelationDto
     {
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         [JsonPropertyName("url")]
-        public string Url { get; set; }
+        public string Url { get; set; } = default!;
     }
 }

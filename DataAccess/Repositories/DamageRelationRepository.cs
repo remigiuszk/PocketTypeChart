@@ -10,8 +10,12 @@ namespace DataAccess.Repositories
 
         public async Task AddRelations(ICollection<DamageRelation> relations, CancellationToken cancellationToken)
         {
-            _dbContext.DamageRelations.AddRange(relations);
-            await  _dbContext.SaveChangesAsync(cancellationToken);
+            var uniqueRelations = relations
+            .DistinctBy(r => new { r.AttackingTypeId, r.DefendingTypeId })
+            .ToList();
+
+            _dbContext.DamageRelations.AddRange(uniqueRelations);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<List<DamageRelation>> GetDefensiveRelations(int pokeTypeId)

@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Application.Abstractions.Services;
 using Application.External.PokeApi;
+using Application.Abstractions.Queries;
+using DataAccess.Queries;
 
 namespace PocketTypeChart.Extensions.ServiceRegistration
 {
@@ -52,6 +54,8 @@ namespace PocketTypeChart.Extensions.ServiceRegistration
         {
             builder.Services.AddScoped<IPokeTypeRepository, PokeTypeRepository>();
             builder.Services.AddScoped<IDamageRelationRepository, DamageRelationRepository>();
+
+            builder.Services.AddScoped<IDamageRelationQueries, DamageRelationQueries>();
         }
 
         private static void RegisterApplicationServices(WebApplicationBuilder builder)

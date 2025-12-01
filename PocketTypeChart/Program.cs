@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.RegisterBuilderServices();
 
-
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
@@ -19,7 +18,8 @@ if (app.Environment.IsDevelopment())
 
 // Configure the HTTP request pipeline.
 
-app.RegisterEndpoints();
+app.RegisterDamageRelationEndpoints();
+app.RegisterPokeTypeEndpoints();
 
 app.UseHttpsRedirection();
 

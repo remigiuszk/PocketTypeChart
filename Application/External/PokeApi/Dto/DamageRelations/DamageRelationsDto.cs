@@ -5,21 +5,21 @@ namespace Application.External.PokeApi.Dto.DamageRelations
     public class DamageRelationsDto
     {
         [JsonPropertyName("no_damage_to")]
-        public List<DamageRelationDto> NoDamageTo { get; set; }
+        public List<ExternalDamageRelationDto> NoDamageTo { get; set; }
 
         [JsonPropertyName("no_damage_from")]
-        public List<DamageRelationDto> NoDamageFrom { get; set; }
+        public List<ExternalDamageRelationDto> NoDamageFrom { get; set; }
 
         [JsonPropertyName("half_damage_to")]
-        public List<DamageRelationDto> HalfDamageTo { get; set; }
+        public List<ExternalDamageRelationDto> HalfDamageTo { get; set; }
 
         [JsonPropertyName("half_damage_from")]
-        public List<DamageRelationDto> HalfDamageFrom { get; set; }
+        public List<ExternalDamageRelationDto> HalfDamageFrom { get; set; }
 
         [JsonPropertyName("double_damage_to")]
-        public List<DamageRelationDto> DoubleDamageTo { get; set; }
+        public List<ExternalDamageRelationDto> DoubleDamageTo { get; set; }
 
         [JsonPropertyName("double_damage_from")]
-        public List<DamageRelationDto> DoubleDamageFrom { get; set; }
+        public List<ExternalDamageRelationDto> DoubleDamageFrom { get; set; }
     }
 }

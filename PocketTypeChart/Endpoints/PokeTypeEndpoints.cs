@@ -7,7 +7,7 @@ namespace PocketTypeChart.Endpoints
 {
     public static class PokeTypeEndpoints
     {
-        public static void RegisterEndpoints(this WebApplication app)
+        public static void RegisterPokeTypeEndpoints(this WebApplication app)
         {
             var posts = app.MapGroup("/api/poketypes");
 

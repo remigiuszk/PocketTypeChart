@@ -35,7 +35,7 @@ namespace Application.External.PokeApi.Mappers
             MapRecievingRelation(_damageRelationsDto.NoDamageFrom, 0);
         }
 
-        private static void MapRecievingRelation(ICollection<DamageRelationDto> relations, double multiplier)
+        private static void MapRecievingRelation(ICollection<ExternalDamageRelationDto> relations, double multiplier)
         {
             foreach (var damageRelationDto in relations)
             {
@@ -44,7 +44,7 @@ namespace Application.External.PokeApi.Mappers
             }
         }
 
-        private static DamageRelation RecievingRelationToDomain(this DamageRelationDto dto, double multiplier)
+        private static DamageRelation RecievingRelationToDomain(this ExternalDamageRelationDto dto, double multiplier)
         {
             return DamageRelation.Create(ExtractAndConvertIdFromPath(dto.Url), _pokeTypeId, multiplier); 
         }
@@ -57,12 +57,12 @@ namespace Application.External.PokeApi.Mappers
 
         private static void MapOutgoingRelations()
         {
-            MapOutgoingRelation(_damageRelationsDto.DoubleDamageFrom, 2);
-            MapOutgoingRelation(_damageRelationsDto.HalfDamageFrom, 0.5);
-            MapOutgoingRelation(_damageRelationsDto.NoDamageFrom, 0);
+            MapOutgoingRelation(_damageRelationsDto.DoubleDamageTo, 2);
+            MapOutgoingRelation(_damageRelationsDto.HalfDamageTo, 0.5);
+            MapOutgoingRelation(_damageRelationsDto.NoDamageTo, 0);
         }
 
-        private static void MapOutgoingRelation(ICollection<DamageRelationDto> relations, double multiplier)
+        private static void MapOutgoingRelation(ICollection<ExternalDamageRelationDto> relations, double multiplier)
         {
             foreach (var damageRelationDto in relations)
             {
@@ -71,7 +71,7 @@ namespace Application.External.PokeApi.Mappers
             }
         }
 
-        private static DamageRelation OutgoingRelationToDomain(this DamageRelationDto dto, double multiplier)
+        private static DamageRelation OutgoingRelationToDomain(this ExternalDamageRelationDto dto, double multiplier)
         {
             return DamageRelation.Create(_pokeTypeId, ExtractAndConvertIdFromPath(dto.Url), multiplier);
         }
