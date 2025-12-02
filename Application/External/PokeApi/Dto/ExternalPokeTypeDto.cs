@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Application.External.PokeApi.Dto
 {
-    public class PokeTypeDto
+    public class ExternalPokeTypeDto
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -14,7 +14,7 @@ namespace Application.External.PokeApi.Dto
         public string Name { get; set; } = default!;
 
         [JsonPropertyName("damage_relations")]
-        public DamageRelationsDto DamageRelations { get; set; } = default!;
+        public ExternalDamageRelationsDto DamageRelations { get; set; } = default!;
 
         [JsonPropertyName("sprites")]
         public SpritesDto Sprites { get; set; } = default!;

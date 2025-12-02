@@ -5,7 +5,7 @@ using Application.DamageRelations.GetTypingEffectivenessQuery.Mappers;
 using Application.Shared;
 
 
-namespace Application.DamageRelations.GetDamageRelationsForSelectedTypes
+namespace Application.DamageRelations.GetTypingEffectivenessQuery
 {
     public sealed record GetTypingEffectivenessQuery(List<int> SelectedTypesId) : IQuery<TypingEffectivenessReadModel>;
 
@@ -19,15 +19,13 @@ namespace Application.DamageRelations.GetDamageRelationsForSelectedTypes
         {
             var allRelations = await _queries.GetAllDamageRelationsForSelectedTypes(request.SelectedTypesId);
 
-            var defensiveTypes = allRelations.MapDefensiveRelations(request.SelectedTypesId);
-
-            //TODO - ofensive types musza miec jeszcze source type - bedziemy kategoryzowac w sposob ze fighting types move affect: bla bla
-            var ofensiveTypes = allRelations.MapOffensiveRelations(request.SelectedTypesId);
+            var defensiveRelations = allRelations.MapDefensiveRelations(request.SelectedTypesId);
+            var offensiveRelations = allRelations.MapOffensiveRelations(request.SelectedTypesId);
 
             return new TypingEffectivenessReadModel()
             {
-                DefensiveDamageRelations = defensiveTypes,
-                OffensiveDamageRelations = ofensiveTypes
+                DefensiveDamageRelations = defensiveRelations,
+                OffensiveDamageRelations = offensiveRelations
             };
         }
     }

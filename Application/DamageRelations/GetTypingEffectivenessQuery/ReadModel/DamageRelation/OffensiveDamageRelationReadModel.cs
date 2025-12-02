@@ -5,6 +5,7 @@ namespace Application.DamageRelations.GetTypingEffectivenessQuery.ReadModel.Dama
 {
     public class OffensiveDamageRelationReadModel : DamageRelationReadModel
     {
+        public PokeTypeReadModel AttackingMoveType { get; set; }
         public PokeTypeReadModel DefendingType { get; set; }
     }
 }

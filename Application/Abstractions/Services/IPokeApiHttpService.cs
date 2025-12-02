@@ -4,6 +4,6 @@ namespace Application.Abstractions.Services
 {
     public interface IPokeApiHttpService
     {
-        Task<PokeTypeDto?> GetPokeTypeAsync(int id);
+        Task<ExternalPokeTypeDto?> GetPokeTypeAsync(int id);
     }
 }

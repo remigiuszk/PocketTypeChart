@@ -61,7 +61,7 @@ namespace Application.PokeTypes.PreloadTypes
             }
         }
 
-        private void MapToDomainsAndAddToSave(PokeTypeDto pokeTypeDto)
+        private void MapToDomainsAndAddToSave(ExternalPokeTypeDto pokeTypeDto)
         {
             _typesToSave.Add(pokeTypeDto.ToDomain());
             _damageRelationsToSave.AddRange(pokeTypeDto.MapDamageRelations());

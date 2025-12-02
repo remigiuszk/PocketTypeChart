@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Queries.Dto;
 using Application.DamageRelations.GetTypingEffectivenessQuery.ReadModel.DamageRelation;
 using Application.DamageRelations.GetTypingEffectivenessQuery.ReadModel.DamageRelation.PokeType;
+using Application.DamageRelations.GetTypingEffectivenessQuery.ReadModel.NewFolder;
 
 namespace Application.DamageRelations.GetTypingEffectivenessQuery.Mappers
 {
@@ -10,17 +11,18 @@ namespace Application.DamageRelations.GetTypingEffectivenessQuery.Mappers
         {
             var returnList = new List<DefensiveDamageRelationReadModel>();
 
-            var lookup = relations.Where(x => selectedTypes.Contains(x.DefendingType.Id)).ToLookup(x => x.AttackingType.Id);
+            var defensiveRelationsWithSelectedTypes = relations.Where(x => selectedTypes.Contains(x.DefendingType.Id));
+            var relationsGroupedByAttackingType = defensiveRelationsWithSelectedTypes.GroupBy(x => x.AttackingType.Id);
 
-            foreach (var grouping in lookup)
+            foreach (var grouping in relationsGroupedByAttackingType)
             {
                 var relation = new DefensiveDamageRelationReadModel()
                 {
-                    AtackingType = PokeTypeReadModel.CreateFromDto(grouping.FirstOrDefault()!.AttackingType),
+                    AttackingType = PokeTypeReadModel.CreateFromDto(grouping.FirstOrDefault()!.AttackingType),
                     Multiplier = CalculateMultiplier(grouping)
                 };
 
-                if (relation.Multiplier != 1)
+                if (RelationIsNotNeutral(relation))
                     returnList.Add(relation);
             }
 
@@ -31,17 +33,19 @@ namespace Application.DamageRelations.GetTypingEffectivenessQuery.Mappers
         {
             var returnList = new List<OffensiveDamageRelationReadModel>();
 
-            var lookup = relations.Where(x => selectedTypes.Contains(x.DefendingType.Id)).ToLookup(x => x.DefendingType.Id);
+            var offensiveRelationsWithSelectedTypes = relations.Where(x => selectedTypes.Contains(x.AttackingType.Id));
+            var relationsGrupedByDefendingType = offensiveRelationsWithSelectedTypes.GroupBy(x => x.DefendingType.Id);
 
-            foreach (var grouping in lookup)
+            foreach (var grouping in relationsGrupedByDefendingType)
             {
                 var relation = new OffensiveDamageRelationReadModel()
                 {
                     DefendingType = PokeTypeReadModel.CreateFromDto(grouping.FirstOrDefault()!.DefendingType),
+                    AttackingMoveType = PokeTypeReadModel.CreateFromDto(grouping.FirstOrDefault()!.AttackingType),
                     Multiplier = CalculateMultiplier(grouping)
                 };
 
-                if (relation.Multiplier != 1)
+                if (RelationIsNotNeutral(relation))
                     returnList.Add(relation);
             }
 
@@ -53,6 +57,11 @@ namespace Application.DamageRelations.GetTypingEffectivenessQuery.Mappers
             return grouping.
                 Select(x => x.Multiplier).
                 Aggregate(1.0, (totalMultiPlayer, currentMultiplier) => totalMultiPlayer * currentMultiplier);
+        }
+
+        private static bool RelationIsNotNeutral(DamageRelationReadModel relation)
+        {
+            return relation.Multiplier != 1;
         }
     }
 }

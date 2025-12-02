@@ -7,16 +7,16 @@ namespace Application.External.PokeApi.Mappers
 {
     public static class PokeApiMappings
     {
-        private static DamageRelationsDto _damageRelationsDto = default!;
+        private static ExternalDamageRelationsDto _damageRelationsDto = default!;
         private static ICollection<DamageRelation> _damageRelationDomainObjects = default!;
         private static int _pokeTypeId;
 
-        public static PokeType ToDomain(this PokeTypeDto dto)
+        public static PokeType ToDomain(this ExternalPokeTypeDto dto)
         {
             return PokeType.Create(dto.Id, dto.Name, dto.Sprites.Generation8.SwordShield.NameIcon);
         }
 
-        public static ICollection<DamageRelation> MapDamageRelations(this PokeTypeDto dto)
+        public static ICollection<DamageRelation> MapDamageRelations(this ExternalPokeTypeDto dto)
         {
             _pokeTypeId = dto.Id;
             _damageRelationsDto = dto.DamageRelations;

@@ -2,7 +2,7 @@
 
 namespace Application.External.PokeApi.Dto.DamageRelations
 {
-    public class DamageRelationsDto
+    public class ExternalDamageRelationsDto
     {
         [JsonPropertyName("no_damage_to")]
         public List<ExternalDamageRelationDto> NoDamageTo { get; set; }

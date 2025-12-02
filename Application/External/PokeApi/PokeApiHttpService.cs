@@ -17,7 +17,7 @@ namespace Application.External.PokeApi
             };
         }
 
-        public async Task<PokeTypeDto?> GetPokeTypeAsync(int id)
+        public async Task<ExternalPokeTypeDto?> GetPokeTypeAsync(int id)
         {
             var url = PokeApiConstants.TYPES_ENDPOINT + id.ToString();
 
@@ -25,7 +25,7 @@ namespace Application.External.PokeApi
 
             if (response.IsSuccessStatusCode)
             {
-                var dto = await response.Content.ReadFromJsonAsync<PokeTypeDto>();
+                var dto = await response.Content.ReadFromJsonAsync<ExternalPokeTypeDto>();
                 return dto;
             }
             else

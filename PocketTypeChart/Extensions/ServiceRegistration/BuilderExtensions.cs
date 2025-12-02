@@ -47,10 +47,10 @@ namespace PocketTypeChart.Extensions.ServiceRegistration
             var connectionString = builder.Configuration.GetConnectionString("Default");
 
             builder.Services.AddDbContext<PokeDbContext>(opt => opt.UseSqlServer(connectionString));
-            RegisterRepositories(builder);
+            RegisterRepositoriesAndQueries(builder);
         }
 
-        private static void RegisterRepositories(WebApplicationBuilder builder)
+        private static void RegisterRepositoriesAndQueries(WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<IPokeTypeRepository, PokeTypeRepository>();
             builder.Services.AddScoped<IDamageRelationRepository, DamageRelationRepository>();

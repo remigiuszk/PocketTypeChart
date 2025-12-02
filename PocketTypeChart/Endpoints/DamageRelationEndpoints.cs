@@ -1,7 +1,5 @@
-﻿using Application.DamageRelations.GetDamageRelationsForSelectedTypes;
-using Application.PokeTypes.GetAllTypes;
+﻿using Application.DamageRelations.GetTypingEffectivenessQuery;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using PocketTypeChart.Extensions.Application;
 
 namespace PocketTypeChart.Endpoints
@@ -12,10 +10,10 @@ namespace PocketTypeChart.Endpoints
         {
             var posts = app.MapGroup("/api/damagerelations");
 
-            posts.MapGet("/", GetAllPokeTypes);
+            posts.MapGet("/", GetTypingEffectiveness);
         }
 
-        private static async Task<IResult> GetAllPokeTypes(string selectedTypesId, IMediator mediator)
+        private static async Task<IResult> GetTypingEffectiveness(string selectedTypesId, IMediator mediator)
         {
             var ids = selectedTypesId.Split(',')
                              .Select(int.Parse)
