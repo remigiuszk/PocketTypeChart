@@ -22,5 +22,6 @@ app.RegisterDamageRelationEndpoints();
 app.RegisterPokeTypeEndpoints();
 
 app.UseHttpsRedirection();
+app.UseRateLimiter();
 
 app.Run();

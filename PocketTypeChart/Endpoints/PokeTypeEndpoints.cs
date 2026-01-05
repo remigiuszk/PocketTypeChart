@@ -1,6 +1,7 @@
 ﻿using Application.PokeTypes.GetAllTypes;
 using Application.PokeTypes.PreloadTypes;
 using MediatR;
+using Microsoft.Extensions.Caching.Memory;
 using PocketTypeChart.Extensions.Application;
 
 namespace PocketTypeChart.Endpoints
@@ -9,17 +10,29 @@ namespace PocketTypeChart.Endpoints
     {
         public static void RegisterPokeTypeEndpoints(this WebApplication app)
         {
-            var posts = app.MapGroup("/api/poketypes");
+            var posts = app.MapGroup("/api/poketypes").RequireRateLimiting("global");
 
             posts.MapGet("/", GetAllPokeTypes);
-            posts.MapPost("/preloadTypes", PreloadPokeTypes);
+            //posts.MapPost("/preloadTypes", PreloadPokeTypes);
         }
 
-        private static async Task<IResult> GetAllPokeTypes(IMediator mediator)
+        private static async Task<IResult> GetAllPokeTypes(IMediator mediator, IMemoryCache cache)
         {
-            var getAllTypes = new GetAllTypesQuery();
-            var result = await mediator.Send(getAllTypes);
-            return result.ToHttpResult();
+            var result = await cache.GetOrCreateAsync("poketypes_all_v1", async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(7);
+                entry.Priority = CacheItemPriority.NeverRemove;
+
+                
+                var res = await mediator.Send(new GetAllTypesQuery());
+                if (res.IsFailure) return null; 
+                return res.Value;
+            });
+
+            if (result is null)
+                return Results.Problem("Failed to load poke types.");
+
+            return Results.Ok(result);
         }
 
         private static async Task<IResult> PreloadPokeTypes(IMediator mediator)

@@ -8,6 +8,8 @@ using Application.Abstractions.Services;
 using Application.External.PokeApi;
 using Application.Abstractions.Queries;
 using DataAccess.Queries;
+using System.Threading.RateLimiting;
+using System.Net;
 
 namespace PocketTypeChart.Extensions.ServiceRegistration
 {
@@ -20,6 +22,10 @@ namespace PocketTypeChart.Extensions.ServiceRegistration
             RegisterDatabaseServices(builder);
 
             RegisterApplicationServices(builder);
+
+            RegisterRateLimiter(builder);
+
+            builder.Services.AddMemoryCache();
 
             builder.Services.AddMediatR(cfg =>
                 cfg.RegisterServicesFromAssemblyContaining<PreloadTypesCommand>());
@@ -61,6 +67,43 @@ namespace PocketTypeChart.Extensions.ServiceRegistration
         private static void RegisterApplicationServices(WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<IPokeApiHttpService, PokeApiHttpService>();
+        }
+
+        private static void RegisterRateLimiter(WebApplicationBuilder builder)
+        {
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+                options.AddPolicy("global", context =>
+                {
+                    var ip = GetClientIp(context) ?? "unknown";
+
+                    return RateLimitPartition.GetFixedWindowLimiter(
+                        partitionKey: ip,
+                        factory: _ => new FixedWindowRateLimiterOptions
+                        {
+                            PermitLimit = 120,
+                            Window = TimeSpan.FromMinutes(1),
+                            QueueLimit = 0,
+                            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                            AutoReplenishment = true
+                        });
+                });
+            });
+        }
+        private static string? GetClientIp(HttpContext context)
+        {
+            // Jeśli jesteś za proxy (Azure/App Service), to często dostaniesz X-Forwarded-For.
+            // Bierzemy pierwsze IP z listy.
+            if (context.Request.Headers.TryGetValue("X-Forwarded-For", out var forwarded))
+            {
+                var first = forwarded.ToString().Split(',')[0].Trim();
+                if (IPAddress.TryParse(first, out var ip))
+                    return ip.ToString();
+            }
+
+            return context.Connection.RemoteIpAddress?.ToString();
         }
     }
 }
