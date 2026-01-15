@@ -42,7 +42,7 @@ namespace Application.DamageRelations.GetTypingEffectivenessQuery.Mappers
                 {
                     DefendingType = PokeTypeReadModel.CreateFromDto(grouping.FirstOrDefault()!.DefendingType),
                     AttackingMoveType = PokeTypeReadModel.CreateFromDto(grouping.FirstOrDefault()!.AttackingType),
-                    Multiplier = CalculateMultiplier(grouping)
+                    Multiplier = grouping.FirstOrDefault()!.Multiplier
                 };
 
                 if (RelationIsNotNeutral(relation))

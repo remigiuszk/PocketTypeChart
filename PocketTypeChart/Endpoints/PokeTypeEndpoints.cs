@@ -13,6 +13,7 @@ namespace PocketTypeChart.Endpoints
             var posts = app.MapGroup("/api/poketypes").RequireRateLimiting("global");
 
             posts.MapGet("/", GetAllPokeTypes);
+            posts.MapMethods("/health", ["GET", "HEAD"], WarmUpDb);
             //posts.MapPost("/preloadTypes", PreloadPokeTypes);
         }
 
@@ -23,9 +24,9 @@ namespace PocketTypeChart.Endpoints
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(7);
                 entry.Priority = CacheItemPriority.NeverRemove;
 
-                
+
                 var res = await mediator.Send(new GetAllTypesQuery());
-                if (res.IsFailure) return null; 
+                if (res.IsFailure) return null;
                 return res.Value;
             });
 
@@ -40,6 +41,12 @@ namespace PocketTypeChart.Endpoints
             var preloadTypes = new PreloadTypesCommand();
             var result = await mediator.Send(preloadTypes);
             return result.ToHttpResult();
+        }
+
+        private static async Task<IResult> WarmUpDb(IMediator mediator)
+        {
+            await mediator.Send(new HealthQuery());
+            return Results.Ok();
         }
     }
 }

@@ -18,6 +18,11 @@ namespace DataAccess.Repositories
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task<List<DamageRelation>> GetAll(CancellationToken c)
+        {
+            return await _dbContext.DamageRelations.ToListAsync(c);
+        }
+
         public async Task<List<DamageRelation>> GetDefensiveRelations(int pokeTypeId)
         {
             return await _dbContext.DamageRelations.Where(relation => relation.DefendingTypeId == pokeTypeId).ToListAsync();

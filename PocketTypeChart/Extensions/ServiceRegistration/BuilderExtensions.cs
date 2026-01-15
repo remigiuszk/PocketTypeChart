@@ -52,7 +52,12 @@ namespace PocketTypeChart.Extensions.ServiceRegistration
         {
             var connectionString = builder.Configuration.GetConnectionString("Default");
 
-            builder.Services.AddDbContext<PokeDbContext>(opt => opt.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<PokeDbContext>(opt => opt.UseSqlServer(connectionString, sql =>
+            {
+                sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                sql.CommandTimeout(60);
+            }));
+
             RegisterRepositoriesAndQueries(builder);
         }
 

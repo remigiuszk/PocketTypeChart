@@ -1,7 +1,6 @@
 ﻿using Application.DamageRelations.GetTypingEffectivenessQuery;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
-using PocketTypeChart.Extensions.Application;
 
 namespace PocketTypeChart.Endpoints
 {
@@ -9,9 +8,10 @@ namespace PocketTypeChart.Endpoints
     {
         public static void RegisterDamageRelationEndpoints(this WebApplication app)
         {
-            var posts = app.MapGroup("/api/damagerelations").RequireRateLimiting("global");
+            var damageRelations = app.MapGroup("/api/damagerelations").RequireRateLimiting("global");
 
-            posts.MapGet("/", GetTypingEffectiveness);
+            damageRelations.MapGet("/", GetTypingEffectiveness);
+            damageRelations.MapGet("/all", GetAllRelations);
         }
 
         private static async Task<IResult> GetTypingEffectiveness(
@@ -44,6 +44,25 @@ namespace PocketTypeChart.Endpoints
                 return Results.Problem("Failed to calculate typing effectiveness.");
 
             return Results.Ok(model);
+        }
+
+        private static async Task<IResult> GetAllRelations(IMediator mediator, IMemoryCache cache)
+        {
+            var result = await cache.GetOrCreateAsync("damagerelations_all_v1", async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(7);
+                entry.Priority = CacheItemPriority.NeverRemove;
+
+
+                var res = await mediator.Send(new GetAllDamageRelationsQuery());
+                if (res.IsFailure) return null;
+                return res.Value;
+            });
+
+            if (result is null)
+                return Results.Problem("Failed to load damage relations.");
+
+            return Results.Ok(result);
         }
     }
 }

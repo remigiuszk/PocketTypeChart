@@ -21,5 +21,10 @@ namespace DataAccess.Queries
                      relations.Multiplier))
                 .ToListAsync();
         }
+
+        public async Task WarmUpDb()
+        {
+            await _dbContext.Database.ExecuteSqlRawAsync("SELECT 1");
+        }
     }
 }
