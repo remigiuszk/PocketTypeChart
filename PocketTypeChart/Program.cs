@@ -18,6 +18,8 @@ if (app.Environment.IsDevelopment())
 
 // Configure the HTTP request pipeline.
 
+app.UseCors();
+
 app.RegisterDamageRelationEndpoints();
 app.RegisterPokeTypeEndpoints();
 

@@ -1,0 +1,77 @@
+name: Deploy
+
+on:
+  push:
+    branches: ["**"]
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  ACR_LOGIN_SERVER: acrmyplatform.azurecr.io   # from projects/shared output acr_login_server
+  RESOURCE_GROUP: rg-pocket-type-chart-dev     # from projects/app-pocket-type-chart, rg-${app_name}-${environment}
+  APP_NAME: ca-pocket-type-chart-dev           # Container App name
+  MIGRATION_JOB_NAME: caj-pocket-type-chart-dev-migrate
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: deploy   # must match var.github_environment in ci_cd.tf
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}         # ci_cd.tf output github_actions_client_id
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}          # ci_cd.tf output github_actions_tenant_id
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }} # ci_cd.tf output github_actions_subscription_id
+
+      - name: ACR login
+        run: az acr login --name $(echo $ACR_LOGIN_SERVER | cut -d. -f1)
+
+      - name: Build and push app image
+        run: |
+          docker build -t $ACR_LOGIN_SERVER/pocket-type-chart:$IMAGE_TAG -f PocketTypeChart/Dockerfile .
+          docker push $ACR_LOGIN_SERVER/pocket-type-chart:$IMAGE_TAG
+
+      - name: Build and push migration image
+        run: |
+          docker build -t $ACR_LOGIN_SERVER/pocket-type-chart-migrate:$IMAGE_TAG -f PocketTypeChart/Dockerfile.migrate .
+          docker push $ACR_LOGIN_SERVER/pocket-type-chart-migrate:$IMAGE_TAG
+
+      - name: Run migrations
+        run: |
+          az containerapp job update \
+            --name $MIGRATION_JOB_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --image $ACR_LOGIN_SERVER/pocket-type-chart-migrate:$IMAGE_TAG
+
+          EXECUTION_NAME=$(az containerapp job start \
+            --name $MIGRATION_JOB_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --query name -o tsv)
+
+          for i in $(seq 1 30); do
+            STATUS=$(az containerapp job execution show \
+              --name $MIGRATION_JOB_NAME \
+              --resource-group $RESOURCE_GROUP \
+              --job-execution-name $EXECUTION_NAME \
+              --query "properties.status" -o tsv)
+            echo "Migration status: $STATUS"
+            if [ "$STATUS" = "Succeeded" ]; then exit 0; fi
+            if [ "$STATUS" = "Failed" ]; then exit 1; fi
+            sleep 10
+          done
+          echo "Timed out waiting for migration job"
+          exit 1
+
+      - name: Deploy app image
+        run: |
+          az containerapp update \
+            --name $APP_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --image $ACR_LOGIN_SERVER/pocket-type-chart:$IMAGE_TAG

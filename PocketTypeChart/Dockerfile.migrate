@@ -1,0 +1,29 @@
+# Builds a self-contained EF Core migrations bundle and runs it against ConnectionStrings__Default.
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["PocketTypeChart/PocketTypeChart.csproj", "PocketTypeChart/"]
+COPY ["DataAccess/DataAccess.csproj", "DataAccess/"]
+COPY ["Application/Application.csproj", "Application/"]
+COPY ["Domain/Domain.csproj", "Domain/"]
+RUN dotnet restore "./DataAccess/DataAccess.csproj"
+COPY . .
+
+RUN dotnet tool install --global dotnet-ef --version 9.0.10
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+RUN dotnet ef migrations bundle \
+    --project DataAccess/DataAccess.csproj \
+    --startup-project PocketTypeChart/PocketTypeChart.csproj \
+    --configuration $BUILD_CONFIGURATION \
+    --self-contained \
+    --target-runtime linux-x64 \
+    --output /app/efbundle
+
+# runtime-deps (not aspnet/runtime) is enough since the bundle is self-contained
+FROM mcr.microsoft.com/dotnet/runtime-deps:8.0 AS final
+WORKDIR /app
+COPY --from=build /app/efbundle ./efbundle
+
+ENTRYPOINT ["/bin/sh", "-c", "./efbundle --connection \"$ConnectionStrings__Default\""]

@@ -25,6 +25,19 @@ namespace PocketTypeChart.Extensions.ServiceRegistration
 
             RegisterRateLimiter(builder);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+                        ?? ["http://localhost:8081"];
+
+                    policy.WithOrigins(allowedOrigins)
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
             builder.Services.AddMemoryCache();
 
             builder.Services.AddMediatR(cfg =>
