@@ -13,7 +13,7 @@ env:
   ACR_LOGIN_SERVER: acrmyplatform.azurecr.io   # from projects/shared output acr_login_server
   RESOURCE_GROUP: rg-pocket-type-chart-dev     # from projects/app-pocket-type-chart, rg-${app_name}-${environment}
   APP_NAME: ca-pocket-type-chart-dev           # Container App name
-  MIGRATION_JOB_NAME: caj-pocket-type-chart-dev-migrate
+  MIGRATION_JOB_NAME: caj-pocket-type-chart-dev-mig
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
