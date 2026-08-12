@@ -14,7 +14,7 @@ namespace PocketTypeChart.Endpoints
 
             posts.MapGet("/", GetAllPokeTypes);
             posts.MapMethods("/health", ["GET", "HEAD"], WarmUpDb);
-            posts.MapPost("/preloadTypes", PreloadPokeTypes);
+            //posts.MapPost("/preloadTypes", PreloadPokeTypes);
         }
 
         private static async Task<IResult> GetAllPokeTypes(IMediator mediator, IMemoryCache cache)
