@@ -24,6 +24,20 @@ namespace DataAccess.Repositories
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task UpdatePokeTypesAsync(ICollection<PokeType> pokeTypes, CancellationToken cancellationToken)
+        {
+            _dbContext.PokeTypes.UpdateRange(pokeTypes);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<byte[]?> GetSpriteImageAsync(int id, CancellationToken cancellationToken)
+        {
+            return await _dbContext.PokeTypes
+                .Where(x => x.Id == id)
+                .Select(x => x.SpriteImage)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+
         public async Task<bool> HasAnyPokeTypesAsync(CancellationToken cancellationToken)
         {
             return await _dbContext.PokeTypes.AnyAsync(cancellationToken);

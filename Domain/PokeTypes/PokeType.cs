@@ -19,6 +19,7 @@ namespace Domain.PokeTypes
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Sprite { get; set; }
+        public byte[]? SpriteImage { get; set; }
 
         public static PokeType Create(int id, string? name, string? sprite)
         {

@@ -57,13 +57,16 @@ namespace Application.PokeTypes.PreloadTypes
                 var pokeTypeDto = await _pokeApiHttpService.GetPokeTypeAsync(i);
 
                 if(pokeTypeDto != null)
-                    MapToDomainsAndAddToSave(pokeTypeDto);
+                    await MapToDomainsAndAddToSaveAsync(pokeTypeDto);
             }
         }
 
-        private void MapToDomainsAndAddToSave(ExternalPokeTypeDto pokeTypeDto)
+        private async Task MapToDomainsAndAddToSaveAsync(ExternalPokeTypeDto pokeTypeDto)
         {
-            _typesToSave.Add(pokeTypeDto.ToDomain());
+            var pokeType = pokeTypeDto.ToDomain();
+            pokeType.SpriteImage = await _pokeApiHttpService.DownloadSpriteAsync(pokeTypeDto.Sprites.Generation8.SwordShield.NameIcon);
+
+            _typesToSave.Add(pokeType);
             _damageRelationsToSave.AddRange(pokeTypeDto.MapDamageRelations());
         }
 

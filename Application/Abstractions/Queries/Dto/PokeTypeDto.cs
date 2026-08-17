@@ -17,7 +17,7 @@ namespace Application.Abstractions.Queries.Dto
 
         public static PokeTypeDto CreateFromDomain(PokeType pokeTypeDomain)
         {
-            return new PokeTypeDto(pokeTypeDomain.Id, pokeTypeDomain.Name!, pokeTypeDomain.Sprite!);
+            return new PokeTypeDto(pokeTypeDomain.Id, pokeTypeDomain.Name!, $"/api/poketypes/{pokeTypeDomain.Id}/sprite");
         }
     }
 }

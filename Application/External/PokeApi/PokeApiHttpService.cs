@@ -33,5 +33,15 @@ namespace Application.External.PokeApi
                 throw new HttpRequestException(response.ReasonPhrase);
             }
         }
+
+        public async Task<byte[]?> DownloadSpriteAsync(string url)
+        {
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            return await response.Content.ReadAsByteArrayAsync();
+        }
     }
 }
