@@ -19,7 +19,7 @@ namespace PocketTypeChart.Endpoints
             posts.MapGet("/{id:int}/sprite", GetSprite);
             posts.MapMethods("/health", ["GET", "HEAD"], WarmUpDb);
             //posts.MapPost("/preloadTypes", PreloadPokeTypes);
-            //posts.MapPost("/backfillSpriteImages", BackfillSpriteImages);
+            posts.MapPost("/backfillSpriteImages", BackfillSpriteImages);
         }
 
         private static async Task<IResult> GetAllPokeTypes(IMediator mediator, IMemoryCache cache)
