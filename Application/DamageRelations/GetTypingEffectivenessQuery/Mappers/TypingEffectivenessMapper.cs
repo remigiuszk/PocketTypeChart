@@ -34,9 +34,10 @@ namespace Application.DamageRelations.GetTypingEffectivenessQuery.Mappers
             var returnList = new List<OffensiveDamageRelationReadModel>();
 
             var offensiveRelationsWithSelectedTypes = relations.Where(x => selectedTypes.Contains(x.AttackingType.Id));
-            var relationsGrupedByDefendingType = offensiveRelationsWithSelectedTypes.GroupBy(x => x.DefendingType.Id);
+            var relationsGroupedByAttackingAndDefendingType = offensiveRelationsWithSelectedTypes
+                .GroupBy(x => (x.AttackingType.Id, x.DefendingType.Id));
 
-            foreach (var grouping in relationsGrupedByDefendingType)
+            foreach (var grouping in relationsGroupedByAttackingAndDefendingType)
             {
                 var relation = new OffensiveDamageRelationReadModel()
                 {
